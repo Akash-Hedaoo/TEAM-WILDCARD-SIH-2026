@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Rural Health Commons - Self-Triage</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#6cf8bb",
+                        "tertiary-container": "#996100",
+                        "surface-variant": "#e0e3e5",
+                        "secondary": "#006c49",
+                        "on-secondary-fixed-variant": "#005236",
+                        "secondary-fixed": "#6ffbbe",
+                        "on-secondary-container": "#00714d",
+                        "on-background": "#191c1e",
+                        "primary-container": "#2563eb",
+                        "inverse-surface": "#2d3133",
+                        "surface-container-low": "#f2f4f6",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#ffddb8",
+                        "primary-fixed": "#dbe1ff",
+                        "surface-container-high": "#e6e8ea",
+                        "surface-container": "#eceef0",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#4edea3",
+                        "background": "#f7f9fb",
+                        "primary": "#004ac6",
+                        "on-primary-container": "#eeefff",
+                        "surface-tint": "#0053db",
+                        "error-container": "#ffdad6",
+                        "outline-variant": "#c3c6d7",
+                        "tertiary": "#784b00",
+                        "on-primary-fixed": "#00174b",
+                        "outline": "#737686",
+                        "on-tertiary-container": "#ffeedd",
+                        "surface-bright": "#f7f9fb",
+                        "surface": "#f7f9fb",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "on-secondary-fixed": "#002113",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#b4c5ff",
+                        "surface-dim": "#d8dadc",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-surface-variant": "#434655",
+                        "on-tertiary-fixed": "#2a1700",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-surface": "#191c1e",
+                        "surface-container-highest": "#e0e3e5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "base": "4px",
+                        "md": "16px",
+                        "container-margin-desktop": "48px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "container-margin-mobile": "16px",
+                        "gutter": "16px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Custom scrollbar for desktop */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f7f9fb;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d8dadc;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c3c6d7;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-sans">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-container-margin-mobile md:px-container-margin-desktop h-16 bg-surface dark:bg-inverse-surface shadow-sm docked full-width top-0 z-50">
+<div class="flex items-center gap-8">
+<h1 class="text-headline-md font-headline-md font-bold text-primary dark:text-inverse-primary tracking-tight">Rural Health Commons</h1>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant dark:text-on-surface-variant font-medium hover:text-primary dark:hover:text-inverse-primary transition-colors text-label-md font-label-md py-5" href="#">Dashboard</a>
+<a class="text-primary dark:text-inverse-primary font-bold border-b-2 border-primary dark:border-inverse-primary pb-1 text-label-md font-label-md py-5 scale-95 transition-transform" href="#">Triage</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-medium hover:text-primary dark:hover:text-inverse-primary transition-colors text-label-md font-label-md py-5" href="#">Bookings</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant font-medium hover:text-primary dark:hover:text-inverse-primary transition-colors text-label-md font-label-md py-5" href="#">Prescriptions</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:flex items-center justify-center p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="sync">sync</span>
+</button>
+<button class="hidden md:flex items-center justify-center p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="hidden md:flex items-center justify-center p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+<button class="bg-error text-on-error px-4 py-2 rounded-lg text-label-md font-label-md font-semibold hover:bg-opacity-90 transition-opacity shadow-sm">Emergency</button>
+</div>
+</header>
+<!-- Main Content Area - Self-Triage Wizard -->
+<main class="flex-grow flex flex-col items-center pt-8 pb-32 px-container-margin-mobile md:px-container-margin-desktop w-full max-w-6xl mx-auto">
+<!-- Progress Indicator -->
+<div class="w-full mb-12">
+<h2 class="text-headline-lg font-headline-lg text-on-surface mb-2">Self-Triage Assessment</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant mb-8">Help us understand your symptoms to direct you to the right care.</p>
+<div class="flex items-center w-full max-w-3xl mx-auto">
+<!-- Step 1: Active -->
+<div class="flex flex-col items-center relative z-10">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-label-md font-label-md shadow-md ring-4 ring-primary/20">1</div>
+<span class="text-label-sm font-label-sm text-primary mt-2 absolute -bottom-6 whitespace-nowrap">Body Area</span>
+</div>
+<!-- Connector -->
+<div class="flex-grow h-1 bg-surface-variant mx-2 rounded-full relative">
+<div class="absolute top-0 left-0 h-full bg-primary rounded-full w-0 transition-all duration-500 ease-in-out"></div>
+</div>
+<!-- Step 2: Pending -->
+<div class="flex flex-col items-center relative z-10">
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-medium text-label-md font-label-md border-2 border-surface-variant">2</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant mt-2 absolute -bottom-6 whitespace-nowrap">Symptoms</span>
+</div>
+<!-- Connector -->
+<div class="flex-grow h-1 bg-surface-variant mx-2 rounded-full"></div>
+<!-- Step 3: Pending -->
+<div class="flex flex-col items-center relative z-10">
+<div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-medium text-label-md font-label-md border-2 border-surface-variant">3</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant mt-2 absolute -bottom-6 whitespace-nowrap">Severity</span>
+</div>
+</div>
+</div>
+<!-- Wizard Step Content: Body Area Selection -->
+<div class="w-full flex flex-col items-center animate-fade-in-up">
+<h3 class="text-headline-md font-headline-md text-center text-on-surface mb-8">Where are you experiencing discomfort?</h3>
+<!-- Bento Grid for Body Areas -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-5xl">
+<!-- Card 1 -->
+<button class="group flex flex-col items-center justify-center p-lg bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_16px_-4px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-on-primary transition-colors text-primary">
+<span class="material-symbols-outlined text-[32px]" data-icon="face">face</span>
+</div>
+<span class="text-body-lg font-body-lg font-medium text-on-surface group-hover:text-primary transition-colors">Head &amp; Face</span>
+</button>
+<!-- Card 2 -->
+<button class="group flex flex-col items-center justify-center p-lg bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_16px_-4px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-on-primary transition-colors text-primary">
+<span class="material-symbols-outlined text-[32px]" data-icon="stomach">save_as</span>
+</div>
+<span class="text-body-lg font-body-lg font-medium text-on-surface group-hover:text-primary transition-colors">Chest &amp; Abdomen</span>
+</button>
+<!-- Card 3: Selected State Example -->
+<button class="group flex flex-col items-center justify-center p-lg bg-primary-fixed/20 border-2 border-primary rounded-xl shadow-[0_4px_12px_-2px_rgba(37,99,235,0.15)] -translate-y-1 transition-all duration-300 focus:outline-none">
+<div class="absolute top-3 right-3 text-primary">
+<span class="material-symbols-outlined filled" data-icon="check_circle">check_circle</span>
+</div>
+<div class="w-16 h-16 rounded-full bg-primary flex items-center justify-center mb-4 text-on-primary shadow-sm">
+<span class="material-symbols-outlined text-[32px]" data-icon="front_hand">front_hand</span>
+</div>
+<span class="text-body-lg font-body-lg font-bold text-primary">Arms &amp; Hands</span>
+</button>
+<!-- Card 4 -->
+<button class="group flex flex-col items-center justify-center p-lg bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_16px_-4px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-on-primary transition-colors text-primary">
+<span class="material-symbols-outlined text-[32px]" data-icon="foot_bones">foot_bones</span>
+</div>
+<span class="text-body-lg font-body-lg font-medium text-on-surface group-hover:text-primary transition-colors">Legs &amp; Feet</span>
+</button>
+<!-- Card 5 -->
+<button class="group flex flex-col items-center justify-center p-lg bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_16px_-4px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-on-primary transition-colors text-primary">
+<span class="material-symbols-outlined text-[32px]" data-icon="airline_seat_recline_normal">airline_seat_recline_normal</span>
+</div>
+<span class="text-body-lg font-body-lg font-medium text-on-surface group-hover:text-primary transition-colors">Back &amp; Neck</span>
+</button>
+<!-- Card 6 -->
+<button class="group flex flex-col items-center justify-center p-lg bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_16px_-4px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-on-primary transition-colors text-primary">
+<span class="material-symbols-outlined text-[32px]" data-icon="psychology">psychology</span>
+</div>
+<span class="text-body-lg font-body-lg font-medium text-on-surface group-hover:text-primary transition-colors">Mental Health</span>
+</button>
+<!-- Card 7 -->
+<button class="group flex flex-col items-center justify-center p-lg bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_16px_-4px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-on-primary transition-colors text-primary">
+<span class="material-symbols-outlined text-[32px]" data-icon="accessibility_new">accessibility_new</span>
+</div>
+<span class="text-body-lg font-body-lg font-medium text-on-surface group-hover:text-primary transition-colors">Whole Body / General</span>
+</button>
+<!-- Card 8 -->
+<button class="group flex flex-col items-center justify-center p-lg bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_2px_8px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_16px_-4px_rgba(0,0,0,0.1)] hover:-translate-y-1 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent border-dashed bg-surface-bright">
+<div class="w-16 h-16 rounded-full bg-surface-variant flex items-center justify-center mb-4 group-hover:bg-primary-fixed group-hover:text-primary transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-[32px]" data-icon="search">search</span>
+</div>
+<span class="text-body-lg font-body-lg font-medium text-on-surface-variant group-hover:text-primary transition-colors">Search Symptoms</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Sticky Footer Actions -->
+<div class="fixed bottom-0 left-0 w-full bg-surface/95 backdrop-blur-md border-t border-outline-variant p-4 shadow-[0_-8px_24px_-8px_rgba(0,0,0,0.1)] z-40 hidden md:block">
+<div class="max-w-6xl mx-auto flex justify-between items-center px-container-margin-desktop">
+<button class="px-6 py-3 border border-outline text-on-surface rounded-lg text-label-md font-label-md font-medium hover:bg-surface-variant transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+                Cancel
+            </button>
+<button class="px-8 py-3 bg-primary text-on-primary rounded-lg text-label-md font-label-md font-semibold hover:bg-primary/90 hover:shadow-lg transition-all flex items-center gap-2">
+                Continue to Symptoms
+                <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+    </style>
+</body></html>
