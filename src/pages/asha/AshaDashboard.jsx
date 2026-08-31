@@ -2,95 +2,84 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import BottomNavBar from '../../components/shared/BottomNavBar';
 import Icon from '../../components/shared/Icon';
-import { currentAshaWorker, patients } from '../../data/dummyData';
+import { patients, currentAshaWorker } from '../../data/dummyData';
 
 export default function AshaDashboard() {
   const navigate = useNavigate();
   const asha = currentAshaWorker;
-  const roster = patients.slice(0, 5);
 
-  const triageBadge = {
-    red: { bg: 'bg-error-container', text: 'text-on-error-container', icon: 'priority_high' },
-    yellow: { bg: 'bg-tertiary-fixed-dim', text: 'text-on-tertiary-container', icon: 'visibility' },
-    green: { bg: 'bg-secondary-container', text: 'text-on-secondary-container', icon: 'check_circle' },
-  };
+  const triageBadge = { red: 'badge--red', yellow: 'badge--yellow', green: 'badge--green' };
 
   return (
-    <div className="bg-background text-on-background min-h-screen pt-16 pb-24">
-      {/* TopNavBar */}
-      <header className="fixed top-0 z-40 bg-surface shadow-sm flex justify-between items-center w-full px-container-margin-mobile md:px-container-margin-desktop h-16">
-        <span className="text-headline-md font-bold text-primary">Rural Health Commons</span>
-        <div className="flex items-center gap-4">
-          <button className="w-12 h-12 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary active:scale-95 transition-all">
-            <Icon name="sync" />
-          </button>
-          <button onClick={() => navigate('/notifications')} className="w-12 h-12 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary active:scale-95 transition-all hidden sm:flex">
+    <div className="page-shell">
+      <header className="header">
+        <span className="text-headline-md font-bold text-primary" style={{ flex: 1 }}>Rural Health Commons</span>
+        <div className="flex items-center gap-2">
+          <button className="btn--icon"><Icon name="sync" /></button>
+          <button className="btn--icon" onClick={() => navigate('/notifications')} style={{ position: 'relative' }}>
             <Icon name="notifications" />
           </button>
-          <button className="w-12 h-12 flex items-center justify-center rounded-full text-on-surface-variant hover:text-primary active:scale-95 transition-all">
-            <Icon name="account_circle" />
-          </button>
+          <button className="btn--icon"><Icon name="account_circle" /></button>
         </div>
       </header>
 
-      <main className="w-full max-w-3xl mx-auto px-container-margin-mobile flex flex-col gap-8 mt-6 animate-fade-in">
-        {/* Worker Info */}
-        <section className="flex flex-col gap-2">
-          <h1 className="text-headline-lg-mobile font-bold text-on-surface">{asha.name}</h1>
-          <div className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full w-max border ${
-            asha.isOnline ? 'bg-secondary-container text-on-secondary-container border-secondary/20' : 'bg-error-container text-on-error-container border-error/20'
-          }`}>
-            <Icon name={asha.isOnline ? 'cloud_done' : 'cloud_off'} fill size={16} />
-            <span className="text-label-sm uppercase tracking-wide font-medium">
-              {asha.isOnline ? 'Online' : `Offline (${asha.pendingSyncs} Syncs Pending)`}
-            </span>
+      <div className="container animate-fade-in">
+        {/* Offline Banner */}
+        <div className="info-banner info-banner--warning mb-4" style={{ borderRadius: 'var(--radius-lg)' }}>
+          <Icon name="cloud_off" style={{ color: 'var(--tertiary)' }} />
+          <div>
+            <p className="text-label-md font-semibold" style={{ color: 'var(--tertiary)' }}>Offline Mode Active</p>
+            <p className="text-body-sm text-muted">{asha.pendingSyncs} records pending sync</p>
           </div>
-        </section>
+          <button className="btn btn--sm" style={{ marginLeft: 'auto', background: 'var(--tertiary)', color: 'var(--on-tertiary)' }} onClick={() => navigate('/asha/sync')}>
+            Sync Now
+          </button>
+        </div>
 
-        {/* Search */}
-        <section className="w-full">
-          <div className="relative flex items-center w-full">
-            <Icon name="search" className="absolute left-4 text-on-surface-variant" />
-            <input
-              type="text"
-              placeholder="Find household or patient..."
-              className="w-full min-h-[56px] pl-12 pr-4 bg-surface-container-lowest border border-outline-variant rounded-xl text-body-lg text-on-surface placeholder-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm"
-            />
+        {/* Stats Row */}
+        <div className="grid gap-3 mb-6" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+          <div className="stat-card" style={{ textAlign: 'center' }}>
+            <div className="stat-card-value text-primary">{asha.totalPatients}</div>
+            <div className="stat-card-label">Patients</div>
           </div>
-        </section>
+          <div className="stat-card" style={{ textAlign: 'center' }}>
+            <div className="stat-card-value text-error">{patients.filter(p => p.triageLevel === 'red').length}</div>
+            <div className="stat-card-label">Critical</div>
+          </div>
+          <div className="stat-card" style={{ textAlign: 'center' }}>
+            <div className="stat-card-value" style={{ color: 'var(--tertiary)' }}>{asha.pendingSyncs}</div>
+            <div className="stat-card-label">Pending</div>
+          </div>
+        </div>
 
         {/* Patient Roster */}
-        <section className="flex flex-col gap-4">
-          <h2 className="text-label-md text-on-surface-variant uppercase font-semibold">Patient Roster (Priority)</h2>
-          {roster.map((patient) => (
-            <article key={patient.id} className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col gap-4">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="text-headline-md font-semibold text-on-surface mb-1">{patient.name}</h3>
-                  <p className="text-body-md text-on-surface-variant">Age: {patient.age} • Village: {patient.village}</p>
-                </div>
-                {triageBadge[patient.triageLevel] && (
-                  <div className={`${triageBadge[patient.triageLevel].bg} ${triageBadge[patient.triageLevel].text} w-8 h-8 rounded-full flex items-center justify-center`}>
-                    <Icon name={triageBadge[patient.triageLevel].icon} size={20} />
-                  </div>
-                )}
+        <div className="flex justify-between items-center mb-3">
+          <h2 className="section-label" style={{ marginBottom: 0 }}>Priority Roster</h2>
+          <span className="text-label-sm text-muted">{patients.length} patients</span>
+        </div>
+        <div className="flex flex-col gap-3">
+          {patients.map((p) => (
+            <div
+              key={p.id}
+              className="card flex gap-4"
+              style={{ padding: 'var(--sp-4)', cursor: 'pointer' }}
+              onClick={() => navigate(`/asha/triage/${p.id}`)}
+            >
+              <div className={`avatar avatar--initials ${triageBadge[p.triageLevel]?.replace('badge--', 'avatar--') || 'avatar--primary'}`}>
+                {p.name.charAt(0)}
               </div>
-              <button
-                onClick={() => navigate(`/asha/triage/${patient.id}`)}
-                className="w-full min-h-[48px] bg-primary text-on-primary rounded-lg text-label-md font-semibold uppercase tracking-wider hover:bg-surface-tint active:scale-95 transition-all flex justify-center items-center gap-2 mt-2"
-              >
-                <Icon name="assignment_turned_in" /> Assess Now
-              </button>
-            </article>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div className="flex justify-between items-start">
+                  <h3 className="text-body-md font-bold truncate">{p.name}</h3>
+                  <span className={`badge ${triageBadge[p.triageLevel]}`}>{p.triageLevel}</span>
+                </div>
+                <p className="text-body-sm text-muted mt-1">{p.age} Yrs • {p.gender} • {p.village}</p>
+                <p className="text-body-sm text-muted line-clamp-2 mt-1">{p.complaint}</p>
+              </div>
+            </div>
           ))}
-        </section>
-      </main>
-
-      {/* FAB */}
-      <button className="fixed bottom-24 right-4 z-40 w-14 h-14 bg-primary text-on-primary rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.15)] flex items-center justify-center hover:bg-surface-tint active:scale-90 transition-all md:hidden">
-        <Icon name="add" fill />
-      </button>
-
+        </div>
+      </div>
       <BottomNavBar role="asha" />
     </div>
   );

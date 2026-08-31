@@ -252,6 +252,14 @@ export const doctorPrescriptions = [
 ];
 
 // ==================== ADMIN ====================
+export const currentAdmin = {
+  id: 'ADM-001',
+  name: 'Dr. Vivek Sharma',
+  role: 'District Medical Officer',
+  district: 'Pune District, MH',
+  avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDWy_Gem8zA-h30NBYvC_gmMB72mgkymqTZpMELWiNbs0CSiQ9ot-7-76i1Ied7oeysqXAF5Tk-tWoPfZXc2x2wG9UEFZroh_TceCP0o84oLNzcrocXzHJBn0fLbL5cvbpnwcW8qkNaJp-bjMRYqYtSBXSvM1WxfTyM8S62tU_G-ekousgT6wZbDrWMlugpu-p8WdqCSVyuMTgvVwet_qve84WHJESLkERN4PWkc27ATS0hj11mNEzB',
+};
+
 export const adminKPIs = {
   totalConsults: 4289,
   consultsGrowth: '+12%',

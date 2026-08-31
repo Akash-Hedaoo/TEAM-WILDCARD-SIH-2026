@@ -6,134 +6,136 @@ import { features } from '../data/dummyData';
 export default function LandingPage() {
   const navigate = useNavigate();
 
+  const featureColors = {
+    secondary: { bg: 'rgba(0, 108, 73, 0.08)', text: 'var(--secondary)' },
+    primary: { bg: 'rgba(0, 74, 198, 0.08)', text: 'var(--primary)' },
+    tertiary: { bg: 'rgba(120, 75, 0, 0.08)', text: 'var(--tertiary)' },
+  };
+
   return (
-    <div className="bg-background text-on-background min-h-screen flex flex-col">
-      {/* TopNavBar */}
-      <header className="bg-surface shadow-sm sticky top-0 z-50">
-        <div className="flex justify-between items-center w-full px-container-margin-mobile md:px-container-margin-desktop h-16 max-w-7xl mx-auto">
-          <div className="flex items-center gap-2">
-            <Icon name="local_hospital" fill className="text-primary" />
-            <span className="text-headline-md font-bold text-primary">Rural Health Commons</span>
+    <div className="min-h-screen" style={{ display: 'flex', flexDirection: 'column' }}>
+      {/* Header */}
+      <header className="header" style={{ position: 'sticky' }}>
+        <div className="flex items-center justify-between w-full" style={{ maxWidth: 'var(--container-max)', margin: '0 auto' }}>
+          <div className="header-brand" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+            <Icon name="local_hospital" fill />
+            <span>Rural Health Commons</span>
           </div>
-          <div className="hidden md:flex items-center gap-6">
-            <nav className="flex gap-6">
-              <a href="#features" className="text-on-surface-variant font-medium hover:text-primary transition-colors text-label-md">Features</a>
-              <a href="#about" className="text-on-surface-variant font-medium hover:text-primary transition-colors text-label-md">About</a>
-            </nav>
-          </div>
-          <div className="flex items-center gap-4">
-            <button onClick={() => navigate('/login')} className="bg-primary text-on-primary px-5 py-2 rounded-lg text-label-md font-semibold shadow-sm hover:opacity-90 transition-opacity">
-              Login
-            </button>
-            <button className="bg-error text-on-error px-4 py-2 rounded-full text-label-md font-bold shadow-sm hover:opacity-90 transition-opacity flex items-center gap-2">
+          <nav className="flex items-center gap-6 hide-mobile">
+            <a href="#features" className="text-label-md text-muted" style={{ transition: 'color 0.15s' }}>Features</a>
+            <a href="#about" className="text-label-md text-muted">About</a>
+          </nav>
+          <div className="flex items-center gap-3">
+            <button className="btn btn--primary" onClick={() => navigate('/login')}>Login</button>
+            <button className="btn btn--error btn--sm rounded-full" onClick={() => navigate('/login')}>
               <Icon name="emergency" size={16} />
-              <span className="hidden sm:inline">Emergency</span>
+              <span className="hide-mobile" style={{ display: 'none' }}>Emergency</span>
             </button>
           </div>
         </div>
       </header>
 
       {/* Hero */}
-      <main className="flex-grow">
-        <section className="max-w-7xl mx-auto px-container-margin-mobile md:px-container-margin-desktop py-8 md:py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="flex flex-col gap-6 animate-fade-in">
-            <h1 className="text-headline-lg-mobile md:text-[40px] md:leading-[48px] font-bold text-on-surface">
-              Bridging the Gap in <br />
-              <span className="text-primary">Rural Healthcare</span>
-            </h1>
-            <p className="text-body-lg text-on-surface-variant max-w-lg">
-              Empowering communities with offline-first ASHA worker support and instant doctor consultations. Reliable healthcare access, no matter where you are.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 mt-4">
-              <button
-                onClick={() => navigate('/login')}
-                className="bg-primary text-on-primary px-8 py-4 rounded-xl text-label-md font-semibold shadow-[0_4px_12px_rgba(37,99,235,0.2)] hover:shadow-[0_8px_16px_rgba(37,99,235,0.3)] transition-all flex items-center justify-center gap-2 active:scale-95"
-              >
-                <Icon name="calendar_month" /> Book Consult (Citizens)
-              </button>
-              <button
-                onClick={() => navigate('/login')}
-                className="border-2 border-primary text-primary bg-surface px-8 py-4 rounded-xl text-label-md font-semibold hover:bg-primary-fixed transition-colors flex items-center justify-center gap-2 active:scale-95"
-              >
-                <Icon name="medical_information" /> Worker Portal (ASHA)
-              </button>
-            </div>
-          </div>
-          <div className="relative h-[300px] sm:h-[400px] lg:h-[500px] rounded-[2rem] overflow-hidden shadow-lg border border-outline-variant bg-surface-container">
-            <img
-              className="absolute inset-0 w-full h-full object-cover"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaSEtKFvCWCf2KGBjaxvjX91-fh0RrUNPc8gqDyWbCmn8-2QFviBCnC8SK0JA5dwaNk9FRiNMWO1fmINXQo76yO1f11amKS0l_K0bAv2LJ57ByBW7ueXzx53h9DaVus_cgdnseTZbG8DoPbklJRyZCKKEvWcovvhVKO8cvQI5RRiBUj2et11QaLX-yd4lQsqKQzgWpjYmDLk2jDAnhTirYO-LBnFME_OSt7Y18R1qchkY5pBEQtHL1"
-              alt="Doctor with rural patient"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-          </div>
-        </section>
-
-        {/* Features */}
-        <section id="features" className="bg-surface-container-low py-8 md:py-24">
-          <div className="max-w-7xl mx-auto px-container-margin-mobile md:px-container-margin-desktop">
-            <div className="text-center mb-16">
-              <h2 className="text-headline-lg font-bold text-on-surface mb-4">Core Capabilities</h2>
-              <p className="text-body-md text-on-surface-variant max-w-2xl mx-auto">
-                Designed for low-bandwidth environments, ensuring continuous care delivery.
+      <section className="hero-gradient" style={{ flex: 1 }}>
+        <div className="container container--wide" style={{ paddingTop: 'var(--sp-12)', paddingBottom: 'var(--sp-12)' }}>
+          <div className="grid gap-8" style={{ gridTemplateColumns: '1fr', alignItems: 'center' }}>
+            <div className="flex flex-col gap-6 animate-fade-in">
+              <h1 className="text-headline-xl">
+                Bridging the Gap in <br />
+                <span className="text-primary">Rural Healthcare</span>
+              </h1>
+              <p className="text-body-lg text-muted" style={{ maxWidth: '520px' }}>
+                Empowering communities with offline-first ASHA worker support and instant doctor consultations. Reliable healthcare access, no matter where you are.
               </p>
+              <div className="flex gap-4" style={{ flexWrap: 'wrap' }}>
+                <button className="btn btn--primary btn--lg" onClick={() => navigate('/login')}>
+                  <Icon name="calendar_month" /> Book Consult (Citizens)
+                </button>
+                <button className="btn btn--outline btn--lg" onClick={() => navigate('/login')}>
+                  <Icon name="medical_information" /> Worker Portal (ASHA)
+                </button>
+              </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {features.map((feature, i) => (
-                <div key={i} className="bg-surface rounded-2xl p-6 border border-outline-variant shadow-sm hover:shadow-[0_12px_24px_-4px_rgba(0,0,0,0.06)] transition-all group">
-                  <div className={`w-12 h-12 ${feature.bgClass} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                    <Icon name={feature.icon} className={`text-${feature.color} text-2xl`} />
-                  </div>
-                  <h3 className="text-headline-md font-semibold text-on-surface mb-3">{feature.title}</h3>
-                  <p className="text-body-md text-on-surface-variant">{feature.description}</p>
-                </div>
-              ))}
+            <div className="animate-slide-up" style={{ borderRadius: 'var(--radius-xl)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--outline-variant)', height: '280px', display: 'none' }}>
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaSEtKFvCWCf2KGBjaxvjX91-fh0RrUNPc8gqDyWbCmn8-2QFviBCnC8SK0JA5dwaNk9FRiNMWO1fmINXQo76yO1f11amKS0l_K0bAv2LJ57ByBW7ueXzx53h9DaVus_cgdnseTZbG8DoPbklJRyZCKKEvWcovvhVKO8cvQI5RRiBUj2et11QaLX-yd4lQsqKQzgWpjYmDLk2jDAnhTirYO-LBnFME_OSt7Y18R1qchkY5pBEQtHL1" alt="Doctor with rural patient" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           </div>
-        </section>
-      </main>
+          <style>{`
+            @media (min-width: 768px) {
+              .landing-grid { grid-template-columns: 1fr 1fr !important; }
+              .landing-hero-img { display: block !important; height: 400px !important; }
+            }
+          `}</style>
+          <script dangerouslySetInnerHTML={{ __html: `
+            document.querySelector('.landing-grid')?.style;
+          `}} />
+        </div>
+      </section>
+
+      {/* Features */}
+      <section id="features" style={{ background: 'var(--surface-container-low)', padding: 'var(--sp-12) 0' }}>
+        <div className="container container--wide">
+          <div className="text-center mb-8">
+            <h2 className="text-headline-lg mb-3">Core Capabilities</h2>
+            <p className="text-body-md text-muted" style={{ maxWidth: '560px', margin: '0 auto' }}>
+              Designed for low-bandwidth environments, ensuring continuous care delivery.
+            </p>
+          </div>
+          <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+            {features.map((feature, i) => (
+              <div key={i} className="card" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--sp-4)' }}>
+                <div className="feature-icon-wrap" style={{ background: featureColors[feature.color]?.bg }}>
+                  <Icon name={feature.icon} style={{ color: featureColors[feature.color]?.text, fontSize: '24px' }} />
+                </div>
+                <h3 className="text-headline-md">{feature.title}</h3>
+                <p className="text-body-md text-muted">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Footer */}
-      <footer className="bg-surface-container-highest border-t border-outline-variant py-8 mt-auto">
-        <div className="w-full px-container-margin-mobile md:px-container-margin-desktop max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center mb-8">
+      <footer style={{ background: 'var(--surface-container-highest)', borderTop: '1px solid var(--outline-variant)', padding: 'var(--sp-8) 0' }}>
+        <div className="container container--wide">
+          <div className="flex justify-between items-center" style={{ flexWrap: 'wrap', gap: 'var(--sp-4)' }}>
             <div className="flex items-center gap-2">
-              <Icon name="local_hospital" fill className="text-primary text-xl" />
+              <Icon name="local_hospital" fill style={{ color: 'var(--primary)' }} size={20} />
               <span className="text-label-md font-bold text-primary">Rural Health Commons</span>
             </div>
-            <div className="flex gap-4 md:justify-end flex-wrap">
-              <span className="bg-error-container text-on-error-container px-3 py-1 rounded-full text-label-sm font-bold flex items-center gap-1">
+            <div className="flex gap-4" style={{ flexWrap: 'wrap' }}>
+              <span className="badge badge--error" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <Icon name="call" size={14} /> Emergency: 108
               </span>
-              <span className="bg-surface text-on-surface-variant px-3 py-1 rounded-full text-label-sm border border-outline-variant flex items-center gap-1">
+              <span className="badge badge--outline">
                 <Icon name="verified_user" size={14} /> ABHA Compliant
               </span>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
-            <p className="text-body-sm text-on-surface">© 2024 Rural Health Commons. Dedicated to rural healthcare accessibility.</p>
-            <div className="flex flex-wrap gap-4 md:justify-end">
-              <a href="#" className="text-body-sm text-on-surface-variant hover:text-primary transition-colors">Privacy Policy</a>
-              <a href="#" className="text-body-sm text-on-surface-variant hover:text-primary transition-colors">Terms of Service</a>
-              <a href="#" className="text-body-sm text-on-surface-variant hover:text-primary transition-colors">Contact Support</a>
+          <div className="flex justify-between items-center mt-6" style={{ flexWrap: 'wrap', gap: 'var(--sp-4)' }}>
+            <p className="text-body-sm text-muted">© 2024 Rural Health Commons. Dedicated to rural healthcare accessibility.</p>
+            <div className="flex gap-4">
+              <a href="#" className="text-body-sm text-muted">Privacy</a>
+              <a href="#" className="text-body-sm text-muted">Terms</a>
+              <a href="#" className="text-body-sm text-muted">Support</a>
             </div>
           </div>
         </div>
       </footer>
 
       {/* Mobile Bottom Nav */}
-      <nav className="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-2 md:hidden bg-surface shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-50">
-        <button onClick={() => navigate('/')} className="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1 scale-90">
-          <Icon name="home_health" fill /> <span className="text-[10px] font-medium mt-1">Home</span>
+      <nav className="bottom-nav">
+        <button className="bottom-nav-item bottom-nav-item--active" onClick={() => navigate('/')}>
+          <Icon name="home_health" fill /> <span>Home</span>
         </button>
-        <button onClick={() => navigate('/login')} className="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high rounded-xl">
-          <Icon name="medical_services" /> <span className="text-[10px] font-medium mt-1">Triage</span>
+        <button className="bottom-nav-item" onClick={() => navigate('/login')}>
+          <Icon name="medical_services" /> <span>Triage</span>
         </button>
-        <button onClick={() => navigate('/login')} className="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high rounded-xl">
-          <Icon name="history_edu" /> <span className="text-[10px] font-medium mt-1">History</span>
+        <button className="bottom-nav-item" onClick={() => navigate('/login')}>
+          <Icon name="history_edu" /> <span>History</span>
         </button>
-        <button onClick={() => navigate('/login')} className="flex flex-col items-center justify-center text-on-surface-variant px-3 py-1 hover:bg-surface-container-high rounded-xl">
-          <Icon name="person" /> <span className="text-[10px] font-medium mt-1">Profile</span>
+        <button className="bottom-nav-item" onClick={() => navigate('/login')}>
+          <Icon name="person" /> <span>Profile</span>
         </button>
       </nav>
     </div>

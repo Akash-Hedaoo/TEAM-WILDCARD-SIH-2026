@@ -1,107 +1,122 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SideNavBar from '../../components/shared/SideNavBar';
+import BottomNavBar from '../../components/shared/BottomNavBar';
 import Icon from '../../components/shared/Icon';
-import { staffMembers } from '../../data/dummyData';
+import { currentAdmin } from '../../data/dummyData';
 
 export default function AdminStaffManagement() {
   const navigate = useNavigate();
-  const [filter, setFilter] = useState('All');
+  const [filter, setFilter] = useState('all');
 
-  const filteredStaff = filter === 'All' ? staffMembers : staffMembers.filter(s => s.role.includes(filter));
+  const staff = [
+    { id: 'S001', name: 'Dr. Ramesh Kumar', role: 'Doctor', location: 'PHC-01', status: 'active', lastActive: '2 mins ago' },
+    { id: 'S002', name: 'Dr. Sunita Patel', role: 'Doctor', location: 'PHC-02', status: 'offline', lastActive: '2 hours ago' },
+    { id: 'A001', name: 'Sita Devi', role: 'ASHA', location: 'Block A', status: 'active', lastActive: 'Just now' },
+    { id: 'A002', name: 'Anita Sharma', role: 'ASHA', location: 'Block B', status: 'offline', lastActive: '1 day ago' },
+    { id: 'N001', name: 'Priya Singh', role: 'Nurse', location: 'PHC-01', status: 'active', lastActive: '10 mins ago' },
+  ];
+
+  const filteredStaff = filter === 'all' ? staff : staff.filter(s => s.role.toLowerCase() === filter.toLowerCase());
 
   return (
-    <div className="bg-background min-h-screen flex">
-      <SideNavBar role="admin" />
+    <div className="page-shell page-shell--with-sidebar" style={{ paddingBottom: 0 }}>
+      <SideNavBar role="admin" avatar={currentAdmin.avatar} />
 
-      <main className="flex-1 lg:ml-64 flex flex-col h-screen overflow-hidden">
-        <header className="h-16 bg-surface border-b border-outline-variant flex items-center px-4 md:px-6 shrink-0 z-10 sticky top-0">
-          <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-primary hover:bg-surface-container rounded-full lg:hidden mr-2">
-            <Icon name="arrow_back" />
-          </button>
-          <h1 className="text-headline-md font-bold text-on-surface">Staff Management</h1>
-        </header>
+      {/* Header */}
+      <header className="header header--with-sidebar">
+        <h1 className="text-headline-md font-bold text-primary" style={{ flex: 1 }}>Staff Management</h1>
+        <button className="btn btn--primary btn--sm hide-mobile"><Icon name="person_add" size={18} /> Add Staff</button>
+      </header>
 
-        <div className="flex-1 overflow-y-auto p-4 md:p-6 animate-fade-in">
-          <div className="max-w-5xl mx-auto flex flex-col gap-6">
-
-            <div className="flex flex-col md:flex-row justify-between gap-4">
-              <div className="flex gap-2">
-                {['All', 'ASHA', 'Doctor'].map(f => (
-                  <button 
-                    key={f}
-                    onClick={() => setFilter(f)}
-                    className={`px-4 py-2 rounded-lg text-label-md font-semibold transition-colors ${
-                      filter === f ? 'bg-primary text-on-primary' : 'bg-surface text-on-surface border border-outline-variant hover:bg-surface-container'
-                    }`}
-                  >
-                    {f}
-                  </button>
-                ))}
-              </div>
-              <button className="bg-primary text-on-primary px-4 py-2 rounded-lg text-label-md font-semibold flex items-center justify-center gap-2 shadow-sm hover:opacity-90 transition-opacity">
-                <Icon name="person_add" size={18} /> Add Staff
+      <div className="container animate-fade-in">
+        {/* Actions / Filters */}
+        <div className="flex justify-between items-center mb-6" style={{ flexWrap: 'wrap', gap: 'var(--sp-4)' }}>
+          <div className="flex gap-2" style={{ overflowX: 'auto', paddingBottom: '4px' }}>
+            {['all', 'doctor', 'asha', 'nurse'].map((f) => (
+              <button
+                key={f}
+                className={`pill ${filter === f ? 'pill--active' : ''}`}
+                onClick={() => setFilter(f)}
+              >
+                {f.charAt(0).toUpperCase() + f.slice(1)}
               </button>
-            </div>
-
-            <div className="bg-surface rounded-xl border border-outline-variant shadow-sm overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse min-w-[800px]">
-                  <thead className="bg-surface-container-lowest text-label-sm text-on-surface-variant uppercase tracking-wider">
-                    <tr>
-                      <th className="p-4 border-b border-outline-variant">Name & Role</th>
-                      <th className="p-4 border-b border-outline-variant">Zone</th>
-                      <th className="p-4 border-b border-outline-variant text-center">Patients</th>
-                      <th className="p-4 border-b border-outline-variant text-center">Sync / KPI</th>
-                      <th className="p-4 border-b border-outline-variant">Status</th>
-                      <th className="p-4 border-b border-outline-variant"></th>
-                    </tr>
-                  </thead>
-                  <tbody className="text-body-md text-on-surface">
-                    {filteredStaff.map((staff) => (
-                      <tr key={staff.id} className="hover:bg-surface-container-lowest transition-colors">
-                        <td className="p-4 border-b border-surface-container">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-primary-container text-primary flex items-center justify-center font-bold">
-                              {staff.name.charAt(0)}
-                            </div>
-                            <div>
-                              <p className="font-bold">{staff.name}</p>
-                              <p className="text-label-sm text-on-surface-variant">{staff.role}</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="p-4 border-b border-surface-container text-on-surface-variant">{staff.zone}</td>
-                        <td className="p-4 border-b border-surface-container text-center font-semibold">{staff.patients}</td>
-                        <td className="p-4 border-b border-surface-container text-center">
-                          <span className={`px-2 py-1 rounded text-label-sm font-bold ${parseInt(staff.syncRate) > 90 ? 'bg-secondary-container text-secondary' : 'bg-tertiary-container text-tertiary'}`}>
-                            {staff.syncRate}
-                          </span>
-                        </td>
-                        <td className="p-4 border-b border-surface-container">
-                          <div className="flex flex-col gap-1">
-                            <span className={`inline-flex items-center gap-1 text-label-sm font-bold ${staff.status === 'active' ? 'text-secondary' : 'text-error'}`}>
-                              <div className={`w-2 h-2 rounded-full ${staff.status === 'active' ? 'bg-secondary' : 'bg-error'}`}></div>
-                              {staff.status.charAt(0).toUpperCase() + staff.status.slice(1)}
-                            </span>
-                            <span className="text-[10px] text-on-surface-variant">{staff.lastActive}</span>
-                          </div>
-                        </td>
-                        <td className="p-4 border-b border-surface-container text-right">
-                          <button className="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container rounded-full transition-colors">
-                            <Icon name="more_vert" />
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
+            ))}
+          </div>
+          <div className="flex items-center gap-2" style={{ position: 'relative' }}>
+            <Icon name="search" style={{ position: 'absolute', left: 'var(--sp-3)', color: 'var(--on-surface-variant)' }} size={20} />
+            <input className="input input--search" placeholder="Search staff..." style={{ paddingLeft: 'var(--sp-10)' }} />
           </div>
         </div>
-      </main>
+
+        {/* Staff Table (Desktop) / Cards (Mobile) */}
+        <div className="card card--flat p-0" style={{ overflow: 'hidden' }}>
+          <div className="table-wrap hide-mobile">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Location</th>
+                  <th>Status</th>
+                  <th>Last Active</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredStaff.map((person) => (
+                  <tr key={person.id}>
+                    <td>
+                      <div className="flex items-center gap-3">
+                        <div className="avatar avatar--sm avatar--initials avatar--primary">{person.name.charAt(0)}</div>
+                        <span className="font-semibold">{person.name}</span>
+                      </div>
+                    </td>
+                    <td><span className="badge badge--outline">{person.role}</span></td>
+                    <td>{person.location}</td>
+                    <td>
+                      <div className="flex items-center gap-2">
+                        <div className={`status-dot ${person.status === 'active' ? 'status-dot--online' : 'status-dot--offline'}`} />
+                        <span className="text-body-sm capitalize">{person.status}</span>
+                      </div>
+                    </td>
+                    <td className="text-muted">{person.lastActive}</td>
+                    <td>
+                      <button className="btn--icon" style={{ color: 'var(--on-surface-variant)' }}><Icon name="more_vert" /></button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Mobile View */}
+          <div className="show-mobile-block" style={{ display: 'none' }}>
+            <style>{`@media (max-width: 767px) { .show-mobile-block { display: block !important; } }`}</style>
+            <div className="flex flex-col">
+              {filteredStaff.map((person, i) => (
+                <div key={person.id} className="flex items-center justify-between p-4" style={{ borderBottom: i < filteredStaff.length - 1 ? '1px solid var(--surface-container)' : 'none' }}>
+                  <div className="flex items-center gap-3">
+                    <div className="avatar avatar--initials avatar--primary">{person.name.charAt(0)}</div>
+                    <div>
+                      <h4 className="text-body-md font-bold">{person.name}</h4>
+                      <p className="text-body-sm text-muted">{person.role} • {person.location}</p>
+                    </div>
+                  </div>
+                  <div className={`status-dot ${person.status === 'active' ? 'status-dot--online' : 'status-dot--offline'}`} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Floating Action Button (Mobile) */}
+        <button className="fab show-mobile-block" style={{ display: 'none' }}>
+          <Icon name="person_add" />
+        </button>
+      </div>
+
+      <BottomNavBar role="admin" />
     </div>
   );
 }

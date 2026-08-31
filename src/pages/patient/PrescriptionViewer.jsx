@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import BottomNavBar from '../../components/shared/BottomNavBar';
 import Icon from '../../components/shared/Icon';
 import { prescriptions } from '../../data/dummyData';
 
@@ -10,127 +9,111 @@ export default function PrescriptionViewer() {
   const rx = prescriptions.find((p) => p.id === id) || prescriptions[0];
 
   return (
-    <div className="bg-background text-on-background min-h-screen flex flex-col pb-24 md:pb-0">
-      {/* Top Bar */}
-      <header className="bg-surface shadow-sm sticky top-0 z-50">
-        <div className="flex justify-between items-center w-full px-container-margin-mobile h-16">
-          <div className="flex items-center gap-2">
-            <button onClick={() => navigate(-1)} className="p-2 text-primary hover:bg-surface-container rounded-full transition-colors">
-              <Icon name="arrow_back" />
-            </button>
-            <h1 className="text-headline-md font-bold text-primary">Prescription</h1>
-          </div>
-          <button className="p-2 text-on-surface-variant hover:bg-surface-container rounded-full transition-colors">
-            <Icon name="more_vert" />
-          </button>
+    <div className="page-shell">
+      <header className="header">
+        <div className="flex items-center gap-2 w-full" style={{ maxWidth: '720px', margin: '0 auto' }}>
+          <button className="btn--icon" onClick={() => navigate(-1)}><Icon name="arrow_back" /></button>
+          <h1 className="text-headline-md font-bold text-primary" style={{ flex: 1 }}>Prescription</h1>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="flex-grow p-container-margin-mobile pb-8 max-w-2xl mx-auto w-full">
-        <div className="mb-6 animate-fade-in">
-          <h2 className="text-headline-lg-mobile font-bold text-on-background mb-1">Prescription from {rx.doctor}</h2>
-          <p className="text-body-md text-on-surface-variant flex items-center gap-2">
-            <Icon name="calendar_month" size={16} /> {rx.date}
+      <div className="container container--narrow animate-fade-in">
+        {/* Title + Actions */}
+        <div className="mb-4">
+          <h2 className="text-headline-lg font-bold mb-1">Prescription from {rx.doctor}</h2>
+          <p className="text-body-md text-muted flex items-center gap-2">
+            <Icon name="calendar_month" size={16} /> {rx.date} • <span className="badge badge--primary">{rx.status}</span>
           </p>
         </div>
-
-        {/* Action Bar */}
-        <div className="flex gap-4 mb-8">
-          <button className="flex-1 bg-primary text-on-primary py-3 px-4 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-colors shadow-sm text-label-md font-semibold">
-            <Icon name="download" /> Download PDF
-          </button>
-          <button className="flex-1 bg-surface border border-primary text-primary py-3 px-4 rounded-lg flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors shadow-sm text-label-md font-semibold">
-            <Icon name="share" /> Share
-          </button>
+        <div className="flex gap-3 mb-6">
+          <button className="btn btn--primary" style={{ flex: 1 }}><Icon name="download" size={18} /> Download PDF</button>
+          <button className="btn btn--outline" style={{ flex: 1 }}><Icon name="share" size={18} /> Share</button>
         </div>
 
-        {/* Medical Slip Card */}
-        <div className="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.02)] p-6 relative overflow-hidden animate-fade-in">
-          <div className="absolute top-0 left-0 w-full h-2 bg-primary"></div>
+        {/* Prescription Card */}
+        <div className="card animate-fade-in" style={{ position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'var(--primary)' }} />
 
-          {/* Clinic Info */}
-          <div className="flex justify-between items-start mb-6 border-b border-surface-container-high pb-4">
+          {/* Clinic Header */}
+          <div className="flex items-center gap-4 mb-4" style={{ paddingTop: 'var(--sp-2)' }}>
+            <div className="avatar avatar--lg" style={{ background: 'var(--primary)', color: 'var(--on-primary)', border: 'none' }}>
+              <Icon name="local_hospital" fill />
+            </div>
             <div>
               <h3 className="text-headline-md font-semibold text-primary mb-1">{rx.clinic}</h3>
-              <p className="text-body-sm text-on-surface-variant">{rx.clinicAddress}</p>
-              <p className="text-body-sm text-on-surface-variant">Contact: {rx.clinicContact}</p>
+              <p className="text-body-sm text-muted">{rx.clinicAddress}</p>
+              <p className="text-body-sm text-muted">Contact: {rx.clinicContact}</p>
             </div>
-            <Icon name="medical_services" fill className="text-primary text-4xl" />
           </div>
 
-          {/* Patient Info */}
-          <div className="bg-surface-container-low p-4 rounded-lg mb-6 flex justify-between items-center">
-            <div>
-              <p className="text-label-md text-on-surface-variant mb-1 font-semibold">Patient Details</p>
-              <p className="text-body-lg text-on-background font-semibold">{rx.patientName}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-body-md text-on-background">{rx.patientAge} Yrs, {rx.patientGender}</p>
-              <p className="text-body-sm text-on-surface-variant">ID: {rx.patientId}</p>
+          <hr style={{ border: 'none', borderTop: '1px dashed var(--outline-variant)', margin: 'var(--sp-4) 0' }} />
+
+          {/* Patient Details */}
+          <div className="card card--flat p-4 mb-4" style={{ background: 'var(--surface-container-low)', borderRadius: 'var(--radius-md)' }}>
+            <div className="flex justify-between items-start gap-4" style={{ flexWrap: 'wrap' }}>
+              <div>
+                <p className="section-label">Patient Details</p>
+                <p className="text-body-lg font-semibold">{rx.patientName}</p>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <p className="text-body-md">{rx.patientAge} Yrs, {rx.patientGender}</p>
+                <p className="text-body-sm text-muted">ID: {rx.patientId}</p>
+              </div>
             </div>
           </div>
 
           {/* Diagnosis */}
-          <div className="mb-8">
-            <p className="text-label-md text-on-surface-variant mb-1 font-semibold">Diagnosis</p>
-            <p className="text-body-lg text-on-background bg-error-container text-on-error-container inline-block px-3 py-1 rounded-md font-medium">{rx.diagnosis}</p>
-          </div>
-
-          {/* Rx Symbol */}
           <div className="mb-4">
-            <span className="text-headline-lg font-bold text-primary italic">Rx</span>
+            <p className="section-label">Diagnosis</p>
+            <p className="badge badge--error" style={{ fontSize: '14px', padding: '4px 12px' }}>{rx.diagnosis}</p>
           </div>
 
           {/* Medicines */}
-          <div className="mb-8 space-y-4">
-            {rx.medicines.map((med, i) => (
-              <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-surface-container p-2 gap-2 last:border-b-0">
-                <div className="flex-1">
-                  <p className="text-body-lg text-on-background font-bold flex items-center gap-2">
-                    <Icon name={med.icon} className={`text-${med.color}`} size={16} />
-                    {med.name}
-                  </p>
-                  <p className="text-body-sm text-on-surface-variant mt-1 italic">{med.instructions}</p>
+          <div className="mb-4">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-headline-lg font-bold text-primary italic">Rx</span>
+              <div style={{ flex: 1, height: '1px', background: 'var(--outline-variant)' }} />
+            </div>
+            <div className="flex flex-col gap-4">
+              {rx.medicines.map((med, i) => (
+                <div key={i} className="flex justify-between items-start gap-4" style={{ paddingBottom: 'var(--sp-4)', borderBottom: i < rx.medicines.length - 1 ? '1px solid var(--surface-container)' : 'none' }}>
+                  <div style={{ flex: 1 }}>
+                    <p className="text-body-lg font-bold flex items-center gap-2">
+                      <Icon name={med.icon} size={18} style={{ color: 'var(--primary)' }} /> {med.name}
+                    </p>
+                    <p className="text-body-sm text-muted mt-1 italic">{med.instructions}</p>
+                  </div>
+                  <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                    <span className="badge badge--secondary" style={{ marginBottom: '4px' }}>{med.frequency}</span>
+                    <span className="text-body-sm text-muted" style={{ display: 'block', marginTop: '4px' }}>{med.duration}</span>
+                  </div>
                 </div>
-                <div className="flex flex-col items-start sm:items-end">
-                  <span className={`bg-${med.color === 'tertiary' ? 'tertiary-container text-on-tertiary-container' : 'secondary-container text-on-secondary-container'} px-2 py-1 rounded text-label-md font-semibold`}>
-                    {med.frequency}
-                  </span>
-                  <span className="text-body-sm text-on-surface-variant mt-1">{med.duration}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Advice */}
-          <div className="bg-surface-container-low p-4 rounded-lg mt-6 border-l-4 border-secondary">
-            <p className="text-label-md text-on-surface-variant mb-1 flex items-center gap-1 font-semibold">
-              <Icon name="info" size={16} /> General Advice
-            </p>
-            <p className="text-body-md text-on-background">{rx.advice}</p>
-          </div>
-
-          {/* Signature */}
-          <div className="mt-8 flex justify-end">
-            <div className="text-center">
-              <div className="font-serif text-2xl text-primary opacity-80 mb-1 border-b border-surface-container-high pb-2 italic">
-                {rx.doctor.replace('Dr. ', 'Dr. ')}
-              </div>
-              <p className="text-label-md text-on-background font-semibold">{rx.doctor}</p>
-              <p className="text-body-sm text-on-surface-variant">{rx.doctorCredentials}</p>
-              <p className="text-body-sm text-on-surface-variant">Reg No: {rx.doctorRegNo}</p>
+              ))}
             </div>
           </div>
 
-          {/* Watermark */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
-            <Icon name="health_and_safety" fill style={{ fontSize: '200px' }} />
+          {/* Advice */}
+          <div className="card card--flat p-4 mb-4" style={{ background: 'var(--surface-container-low)', borderLeft: '4px solid var(--secondary)', borderRadius: 'var(--radius-md)' }}>
+            <p className="section-label flex items-center gap-1">
+              <Icon name="info" size={16} /> Advice
+            </p>
+            <p className="text-body-md">{rx.advice}</p>
+          </div>
+
+          <hr style={{ border: 'none', borderTop: '1px dashed var(--outline-variant)', margin: 'var(--sp-4) 0' }} />
+
+          {/* Doctor Signature */}
+          <div className="flex justify-between items-end">
+            <div>
+              <p className="section-label">Signed by</p>
+              <p className="text-label-md font-semibold">{rx.doctor}</p>
+              <p className="text-body-sm text-muted">{rx.doctorCredentials}</p>
+              <p className="text-body-sm text-muted">Reg No: {rx.doctorRegNo}</p>
+            </div>
+            <div className="badge badge--success"><Icon name="verified" size={14} /> Verified</div>
           </div>
         </div>
-      </main>
-
-      <BottomNavBar role="patient" />
+      </div>
     </div>
   );
 }

@@ -1,86 +1,113 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import SideNavBar from '../../components/shared/SideNavBar';
+import BottomNavBar from '../../components/shared/BottomNavBar';
 import Icon from '../../components/shared/Icon';
+import { currentAdmin } from '../../data/dummyData';
 
 export default function AdminSettings() {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-background min-h-screen flex">
-      <SideNavBar role="admin" />
+    <div className="page-shell page-shell--with-sidebar" style={{ paddingBottom: 0 }}>
+      <SideNavBar role="admin" avatar={currentAdmin.avatar} />
 
-      <main className="flex-1 lg:ml-64 flex flex-col h-screen overflow-hidden">
-        <header className="h-16 bg-surface border-b border-outline-variant flex items-center px-4 md:px-6 shrink-0 z-10 sticky top-0">
-          <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-primary hover:bg-surface-container rounded-full lg:hidden mr-2">
-            <Icon name="arrow_back" />
-          </button>
-          <h1 className="text-headline-md font-bold text-on-surface">Platform Settings</h1>
-        </header>
+      {/* Header */}
+      <header className="header header--with-sidebar">
+        <h1 className="text-headline-md font-bold text-primary" style={{ flex: 1 }}>Settings</h1>
+        <button className="btn--icon hide-mobile" onClick={() => navigate('/notifications')} style={{ position: 'relative' }}>
+          <Icon name="notifications" />
+        </button>
+      </header>
 
-        <div className="flex-1 overflow-y-auto p-4 md:p-6 animate-fade-in">
-          <div className="max-w-3xl mx-auto flex flex-col gap-6">
-
-            <div className="bg-surface rounded-xl border border-outline-variant shadow-sm overflow-hidden">
-              <div className="p-4 border-b border-outline-variant bg-surface-container-lowest">
-                <h2 className="text-label-md font-bold uppercase tracking-wider text-on-surface-variant flex items-center gap-2">
-                  <Icon name="notifications" size={20} /> Notification Preferences
-                </h2>
-              </div>
-              <div className="p-4 flex flex-col gap-4">
-                {[
-                  { label: 'Critical Outbreak Alerts', desc: 'Immediate push and email for epidemiological anomalies', checked: true },
-                  { label: 'Inventory Stockouts', desc: 'Daily summary of PHCs with critical low stock', checked: true },
-                  { label: 'Staff Inactivity', desc: 'Alert when a staff member is offline for >48hrs', checked: false },
-                  { label: 'System Updates', desc: 'Maintenance windows and app updates', checked: true }
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center justify-between">
-                    <div>
-                      <p className="text-body-lg font-semibold text-on-surface">{item.label}</p>
-                      <p className="text-body-sm text-on-surface-variant">{item.desc}</p>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" className="sr-only peer" defaultChecked={item.checked} />
-                      <div className="w-11 h-6 bg-surface-container-high peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-                    </label>
-                  </div>
-                ))}
-              </div>
+      <div className="container animate-fade-in" style={{ maxWidth: '800px', margin: '0 auto' }}>
+        
+        {/* Profile Section */}
+        <section className="mb-8">
+          <h2 className="section-label mb-4">Profile & Account</h2>
+          <div className="card flex items-center gap-4" style={{ padding: 'var(--sp-6)' }}>
+            <div className="avatar avatar--xl" style={{ width: '80px', height: '80px' }}>
+              <img src={currentAdmin.avatar} alt="Admin" />
             </div>
-
-            <div className="bg-surface rounded-xl border border-outline-variant shadow-sm overflow-hidden">
-              <div className="p-4 border-b border-outline-variant bg-surface-container-lowest">
-                <h2 className="text-label-md font-bold uppercase tracking-wider text-on-surface-variant flex items-center gap-2">
-                  <Icon name="security" size={20} /> Security & Access
-                </h2>
-              </div>
-              <div className="p-4 flex flex-col gap-4">
-                <button className="flex items-center justify-between p-3 rounded-lg border border-outline-variant hover:bg-surface-container transition-colors text-left">
-                  <div>
-                    <p className="text-body-md font-semibold text-on-surface">Manage Role Permissions</p>
-                    <p className="text-body-sm text-on-surface-variant">Configure access levels for ASHA and Doctors</p>
-                  </div>
-                  <Icon name="chevron_right" />
-                </button>
-                <button className="flex items-center justify-between p-3 rounded-lg border border-outline-variant hover:bg-surface-container transition-colors text-left">
-                  <div>
-                    <p className="text-body-md font-semibold text-on-surface">Audit Logs</p>
-                    <p className="text-body-sm text-on-surface-variant">View system access and activity history</p>
-                  </div>
-                  <Icon name="chevron_right" />
-                </button>
-              </div>
+            <div style={{ flex: 1 }}>
+              <h3 className="text-headline-md font-bold">{currentAdmin.name}</h3>
+              <p className="text-body-md text-muted">{currentAdmin.role} • {currentAdmin.district}</p>
             </div>
-
-            <div className="flex justify-end">
-              <button className="bg-primary text-on-primary px-6 py-2 rounded-lg text-label-md font-bold hover:bg-primary/90 transition-colors shadow-sm">
-                Save Changes
-              </button>
-            </div>
-
+            <button className="btn btn--outline">Edit Profile</button>
           </div>
+        </section>
+
+        {/* System Settings */}
+        <section className="mb-8">
+          <h2 className="section-label mb-4">System Preferences</h2>
+          <div className="card p-0" style={{ overflow: 'hidden' }}>
+            <div className="flex justify-between items-center p-4 border-b border-surface-container" style={{ borderBottom: '1px solid var(--surface-container)' }}>
+              <div>
+                <h4 className="text-body-md font-semibold">Enable SMS Alerts</h4>
+                <p className="text-body-sm text-muted">Send critical notifications via SMS</p>
+              </div>
+              <div style={{ width: '44px', height: '24px', background: 'var(--primary)', borderRadius: '12px', position: 'relative', cursor: 'pointer' }}>
+                <div style={{ position: 'absolute', right: '2px', top: '2px', width: '20px', height: '20px', background: 'white', borderRadius: '50%' }} />
+              </div>
+            </div>
+            
+            <div className="flex justify-between items-center p-4 border-b border-surface-container" style={{ borderBottom: '1px solid var(--surface-container)' }}>
+              <div>
+                <h4 className="text-body-md font-semibold">Auto-Sync Interval</h4>
+                <p className="text-body-sm text-muted">Frequency for background ASHA data sync</p>
+              </div>
+              <select className="input" style={{ width: 'auto', padding: 'var(--sp-2) var(--sp-4)' }} defaultValue="30">
+                <option value="15">15 mins</option>
+                <option value="30">30 mins</option>
+                <option value="60">1 hour</option>
+              </select>
+            </div>
+
+            <div className="flex justify-between items-center p-4">
+              <div>
+                <h4 className="text-body-md font-semibold">Teleconsult Recording</h4>
+                <p className="text-body-sm text-muted">Save video consults for audit purposes</p>
+              </div>
+              <div style={{ width: '44px', height: '24px', background: 'var(--surface-container-highest)', borderRadius: '12px', position: 'relative', cursor: 'pointer' }}>
+                <div style={{ position: 'absolute', left: '2px', top: '2px', width: '20px', height: '20px', background: 'white', borderRadius: '50%' }} />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Security & Access */}
+        <section className="mb-8">
+          <h2 className="section-label mb-4">Security</h2>
+          <div className="card p-0" style={{ overflow: 'hidden' }}>
+            <button className="flex justify-between items-center w-full p-4 hover:bg-surface-low text-left" style={{ borderBottom: '1px solid var(--surface-container)' }}>
+              <div className="flex items-center gap-3">
+                <Icon name="lock" style={{ color: 'var(--on-surface-variant)' }} />
+                <span className="text-body-md font-semibold">Change Password</span>
+              </div>
+              <Icon name="chevron_right" style={{ color: 'var(--on-surface-variant)' }} />
+            </button>
+            <button className="flex justify-between items-center w-full p-4 hover:bg-surface-low text-left">
+              <div className="flex items-center gap-3">
+                <Icon name="security" style={{ color: 'var(--on-surface-variant)' }} />
+                <span className="text-body-md font-semibold">Two-Factor Authentication</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="badge badge--success">Enabled</span>
+                <Icon name="chevron_right" style={{ color: 'var(--on-surface-variant)' }} />
+              </div>
+            </button>
+          </div>
+        </section>
+
+        <div className="flex justify-center mb-8">
+          <button className="btn btn--outline" style={{ color: 'var(--error)', borderColor: 'var(--error)' }} onClick={() => navigate('/login')}>
+            <Icon name="logout" /> Sign Out
+          </button>
         </div>
-      </main>
+
+      </div>
+
+      <BottomNavBar role="admin" />
     </div>
   );
 }
