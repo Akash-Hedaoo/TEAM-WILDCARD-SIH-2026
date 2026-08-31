@@ -29,7 +29,7 @@ export default function LandingPage() {
             <button className="btn btn--primary" onClick={() => navigate('/login')}>Login</button>
             <button className="btn btn--error btn--sm rounded-full" onClick={() => navigate('/login')}>
               <Icon name="emergency" size={16} />
-              <span className="hide-mobile" style={{ display: 'none' }}>Emergency</span>
+              <span className="hide-mobile">Emergency</span>
             </button>
           </div>
         </div>
@@ -38,7 +38,7 @@ export default function LandingPage() {
       {/* Hero */}
       <section className="hero-gradient" style={{ flex: 1 }}>
         <div className="container container--wide" style={{ paddingTop: 'var(--sp-12)', paddingBottom: 'var(--sp-12)' }}>
-          <div className="grid gap-8" style={{ gridTemplateColumns: '1fr', alignItems: 'center' }}>
+          <div className="grid gap-8 landing-grid" style={{ gridTemplateColumns: '1fr', alignItems: 'center' }}>
             <div className="flex flex-col gap-6 animate-fade-in">
               <h1 className="text-headline-xl">
                 Bridging the Gap in <br />
@@ -56,7 +56,7 @@ export default function LandingPage() {
                 </button>
               </div>
             </div>
-            <div className="animate-slide-up" style={{ borderRadius: 'var(--radius-xl)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--outline-variant)', height: '280px', display: 'none' }}>
+            <div className="animate-slide-up landing-hero-img" style={{ borderRadius: 'var(--radius-xl)', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '1px solid var(--outline-variant)', height: '280px', display: 'none' }}>
               <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaSEtKFvCWCf2KGBjaxvjX91-fh0RrUNPc8gqDyWbCmn8-2QFviBCnC8SK0JA5dwaNk9FRiNMWO1fmINXQo76yO1f11amKS0l_K0bAv2LJ57ByBW7ueXzx53h9DaVus_cgdnseTZbG8DoPbklJRyZCKKEvWcovvhVKO8cvQI5RRiBUj2et11QaLX-yd4lQsqKQzgWpjYmDLk2jDAnhTirYO-LBnFME_OSt7Y18R1qchkY5pBEQtHL1" alt="Doctor with rural patient" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           </div>
@@ -66,9 +66,7 @@ export default function LandingPage() {
               .landing-hero-img { display: block !important; height: 400px !important; }
             }
           `}</style>
-          <script dangerouslySetInnerHTML={{ __html: `
-            document.querySelector('.landing-grid')?.style;
-          `}} />
+
         </div>
       </section>
 
@@ -113,7 +111,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="flex justify-between items-center mt-6" style={{ flexWrap: 'wrap', gap: 'var(--sp-4)' }}>
-            <p className="text-body-sm text-muted">© 2024 Rural Health Commons. Dedicated to rural healthcare accessibility.</p>
+            <p className="text-body-sm text-muted">© {new Date().getFullYear()} Rural Health Commons. Dedicated to rural healthcare accessibility.</p>
             <div className="flex gap-4">
               <a href="#" className="text-body-sm text-muted">Privacy</a>
               <a href="#" className="text-body-sm text-muted">Terms</a>

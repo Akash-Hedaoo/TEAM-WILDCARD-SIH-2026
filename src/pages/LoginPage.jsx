@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '../components/shared/Icon';
+import { useAppContext } from '../context/useAppContext';
 
 const roles = [
   { value: 'patient', label: 'Patient', icon: 'person', desc: 'Book consults, view prescriptions' },
@@ -11,13 +12,31 @@ const roles = [
 
 const roleRoutes = { patient: '/patient', asha: '/asha', doctor: '/doctor', admin: '/admin' };
 
+/**
+ * LoginPage - Multi-step authentication flow
+ * Step 1: Role selection
+ * Step 2: Phone number entry
+ * Step 3: OTP verification
+ * Uses AppContext for authentication
+ */
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { login, isAuthenticated, loading, addNotification } = useAppContext();
   const [selectedRole, setSelectedRole] = useState('patient');
   const [step, setStep] = useState(1); // 1 = role, 2 = phone, 3 = otp
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
 
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(roleRoutes[selectedRole]);
+    }
+  }, [isAuthenticated, navigate, selectedRole]);
+
+  /**
+   * Handle OTP digit change
+   */
   const handleOtpChange = (index, value) => {
     if (value.length > 1) return;
     const newOtp = [...otp];
@@ -28,7 +47,28 @@ export default function LoginPage() {
     }
   };
 
-  const handleVerify = () => navigate(roleRoutes[selectedRole]);
+  /**
+   * Handle OTP verification and login
+   */
+  const handleVerify = async () => {
+    const otpCode = otp.join('');
+    if (otpCode.length !== 6) {
+      addNotification('Please enter all 6 OTP digits', 'warning', 2000);
+      return;
+    }
+
+    try {
+      const result = login(selectedRole, phone, otpCode);
+      if (result.success) {
+        addNotification(`Logged in as ${roles.find(r => r.value === selectedRole)?.label}`, 'success', 2000);
+        // Navigation handled by useEffect above
+      } else {
+        addNotification(`Login failed: ${result.error}`, 'error', 2000);
+      }
+    } catch (error) {
+      addNotification(`Error: ${error.message}`, 'error', 2000);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--surface-container-low)', padding: 'var(--sp-4)' }}>
@@ -110,16 +150,34 @@ export default function LoginPage() {
                     }
                   }}
                   autoFocus={i === 0}
+                  disabled={loading}
                 />
               ))}
             </div>
-            <button className="btn btn--primary btn--full btn--lg" onClick={handleVerify}>
-              Verify & Login
+            <button
+              className="btn btn--primary btn--full btn--lg"
+              onClick={handleVerify}
+              disabled={loading || otp.join('').length !== 6}
+            >
+              {loading ? (
+                <>
+                  <Icon name="sync" size={18} style={{ animation: 'spin 1s linear infinite' }} />
+                  Verifying...
+                </>
+              ) : (
+                'Verify & Login'
+              )}
             </button>
             <div className="text-center">
-              <button className="text-body-sm text-primary font-semibold" style={{ background: 'none', border: 'none' }}>Resend OTP</button>
+              <button
+                className="text-body-sm text-primary font-semibold"
+                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                onClick={() => addNotification('OTP sent to +91 ' + phone, 'info', 2000)}
+              >
+                Resend OTP
+              </button>
             </div>
-            <button className="btn btn--ghost btn--full" onClick={() => setStep(2)}>
+            <button className="btn btn--ghost btn--full" onClick={() => setStep(2)} disabled={loading}>
               <Icon name="arrow_back" size={18} /> Change Number
             </button>
           </div>

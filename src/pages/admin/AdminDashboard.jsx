@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SideNavBar from '../../components/shared/SideNavBar';
 import BottomNavBar from '../../components/shared/BottomNavBar';
 import Icon from '../../components/shared/Icon';
+import { useAppContext } from '../../context/useAppContext';
 import { currentAdmin } from '../../data/dummyData';
 
+/**
+ * AdminDashboard - Surveillance and system monitoring dashboard
+ * Shows key performance indicators and system alerts
+ */
 export default function AdminDashboard() {
   const navigate = useNavigate();
+  const { isAuthenticated, addNotification } = useAppContext();
+
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated) {
+      addNotification('Please log in to access the admin dashboard', 'warning', 2000);
+      navigate('/login');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className="page-shell page-shell--with-sidebar" style={{ paddingBottom: 0 }}>

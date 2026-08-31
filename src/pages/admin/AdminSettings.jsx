@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SideNavBar from '../../components/shared/SideNavBar';
 import BottomNavBar from '../../components/shared/BottomNavBar';
@@ -7,6 +7,8 @@ import { currentAdmin } from '../../data/dummyData';
 
 export default function AdminSettings() {
   const navigate = useNavigate();
+  const [smsAlerts, setSmsAlerts] = useState(true);
+  const [teleconsultRecording, setTeleconsultRecording] = useState(false);
 
   return (
     <div className="page-shell page-shell--with-sidebar" style={{ paddingBottom: 0 }}>
@@ -46,8 +48,8 @@ export default function AdminSettings() {
                 <h4 className="text-body-md font-semibold">Enable SMS Alerts</h4>
                 <p className="text-body-sm text-muted">Send critical notifications via SMS</p>
               </div>
-              <div style={{ width: '44px', height: '24px', background: 'var(--primary)', borderRadius: '12px', position: 'relative', cursor: 'pointer' }}>
-                <div style={{ position: 'absolute', right: '2px', top: '2px', width: '20px', height: '20px', background: 'white', borderRadius: '50%' }} />
+              <div onClick={() => setSmsAlerts(!smsAlerts)} style={{ width: '44px', height: '24px', background: smsAlerts ? 'var(--primary)' : 'var(--surface-container-highest)', borderRadius: '12px', position: 'relative', cursor: 'pointer', transition: 'background 0.2s ease' }}>
+                <div style={{ position: 'absolute', top: '2px', width: '20px', height: '20px', background: 'white', borderRadius: '50%', transition: 'left 0.2s ease, right 0.2s ease', ...(smsAlerts ? { right: '2px' } : { left: '2px' }) }} />
               </div>
             </div>
             
@@ -68,8 +70,8 @@ export default function AdminSettings() {
                 <h4 className="text-body-md font-semibold">Teleconsult Recording</h4>
                 <p className="text-body-sm text-muted">Save video consults for audit purposes</p>
               </div>
-              <div style={{ width: '44px', height: '24px', background: 'var(--surface-container-highest)', borderRadius: '12px', position: 'relative', cursor: 'pointer' }}>
-                <div style={{ position: 'absolute', left: '2px', top: '2px', width: '20px', height: '20px', background: 'white', borderRadius: '50%' }} />
+              <div onClick={() => setTeleconsultRecording(!teleconsultRecording)} style={{ width: '44px', height: '24px', background: teleconsultRecording ? 'var(--primary)' : 'var(--surface-container-highest)', borderRadius: '12px', position: 'relative', cursor: 'pointer', transition: 'background 0.2s ease' }}>
+                <div style={{ position: 'absolute', top: '2px', width: '20px', height: '20px', background: 'white', borderRadius: '50%', transition: 'left 0.2s ease, right 0.2s ease', ...(teleconsultRecording ? { right: '2px' } : { left: '2px' }) }} />
               </div>
             </div>
           </div>

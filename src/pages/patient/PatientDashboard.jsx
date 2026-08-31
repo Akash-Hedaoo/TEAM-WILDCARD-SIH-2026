@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TopNavBar from '../../components/shared/TopNavBar';
 import BottomNavBar from '../../components/shared/BottomNavBar';
 import Icon from '../../components/shared/Icon';
+import { useAppContext } from '../../context/useAppContext';
 import { currentPatient, prescriptions, bookings } from '../../data/dummyData';
 
+/**
+ * PatientDashboard - Main patient hub
+ * Shows profile summary, upcoming consultations, and quick actions
+ */
 export default function PatientDashboard() {
   const navigate = useNavigate();
-  const p = currentPatient;
+  const { isAuthenticated, currentUserData, addNotification } = useAppContext();
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated) {
+      addNotification('Please log in to access your dashboard', 'warning', 2000);
+      navigate('/login');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, navigate]);
+
+  // Use context user data or fallback to dummy data
+  const p = currentUserData || currentPatient;
   const upcomingBooking = bookings.find((b) => b.status === 'upcoming');
   const activePrescriptions = prescriptions.filter((rx) => rx.status === 'active');
 
@@ -20,7 +36,7 @@ export default function PatientDashboard() {
             <img src={p.avatar} alt={p.name} />
           </button>
           <div>
-            <span className="text-label-sm text-muted">Good morning,</span>
+            <span className="text-label-sm text-muted">{(() => { const h = new Date().getHours(); return h < 12 ? 'Good morning,' : h < 17 ? 'Good afternoon,' : 'Good evening,'; })()}</span>
             <div className="text-headline-md font-bold text-primary" style={{ fontSize: '18px' }}>Namaste, {p.name.split(' ')[0]}</div>
           </div>
         </div>

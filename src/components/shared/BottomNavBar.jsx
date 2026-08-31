@@ -15,13 +15,20 @@ export default function BottomNavBar({ role = 'patient' }) {
       { to: '/asha', icon: 'assignment', label: 'Roster', exact: true },
       { to: '/asha/sync', icon: 'sync', label: 'Sync' },
       { to: '/notifications', icon: 'notifications', label: 'Alerts' },
-      { to: '/login', icon: 'person', label: 'Profile' },
+      { to: '/asha/profile', icon: 'person', label: 'Profile' },
     ],
     doctor: [
       { to: '/doctor', icon: 'dashboard', label: 'Queue', exact: true },
       { to: '/doctor/prescriptions', icon: 'medication', label: 'E-Rx' },
       { to: '/notifications', icon: 'notifications', label: 'Alerts' },
-      { to: '/login', icon: 'person', label: 'Profile' },
+      { to: '/doctor/profile', icon: 'person', label: 'Profile' },
+    ],
+    admin: [
+      { to: '/admin', icon: 'monitoring', label: 'Dashboard', exact: true },
+      { to: '/admin/staff', icon: 'groups', label: 'Staff' },
+      { to: '/admin/settings', icon: 'settings', label: 'Settings' },
+      { to: '/notifications', icon: 'notifications', label: 'Alerts' },
+      { to: '/admin/profile', icon: 'person', label: 'Profile' },
     ],
   };
 

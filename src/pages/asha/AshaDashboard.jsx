@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BottomNavBar from '../../components/shared/BottomNavBar';
 import Icon from '../../components/shared/Icon';
+import { useAppContext } from '../../context/useAppContext';
 import { patients, currentAshaWorker } from '../../data/dummyData';
 
+/**
+ * AshaDashboard - ASHA worker main dashboard
+ * Shows offline status and patient roster for triage
+ */
 export default function AshaDashboard() {
   const navigate = useNavigate();
+  const { isAuthenticated, isOnline, addNotification } = useAppContext();
+
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated) {
+      addNotification('Please log in to access your dashboard', 'warning', 2000);
+      navigate('/login');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, navigate]);
+
   const asha = currentAshaWorker;
 
   const triageBadge = { red: 'badge--red', yellow: 'badge--yellow', green: 'badge--green' };
@@ -25,16 +41,20 @@ export default function AshaDashboard() {
 
       <div className="container animate-fade-in">
         {/* Offline Banner */}
-        <div className="info-banner info-banner--warning mb-4" style={{ borderRadius: 'var(--radius-lg)' }}>
-          <Icon name="cloud_off" style={{ color: 'var(--tertiary)' }} />
-          <div>
-            <p className="text-label-md font-semibold" style={{ color: 'var(--tertiary)' }}>Offline Mode Active</p>
-            <p className="text-body-sm text-muted">{asha.pendingSyncs} records pending sync</p>
+        {(!isOnline || asha.pendingSyncs > 0) && (
+          <div className="info-banner info-banner--warning mb-4" style={{ borderRadius: 'var(--radius-lg)' }}>
+            <Icon name="cloud_off" style={{ color: 'var(--tertiary)' }} />
+            <div>
+              <p className="text-label-md font-semibold" style={{ color: 'var(--tertiary)' }}>
+                {!isOnline ? 'Offline Mode Active' : 'Pending Sync'}
+              </p>
+              <p className="text-body-sm text-muted">{asha.pendingSyncs} records pending sync</p>
+            </div>
+            <button className="btn btn--sm" style={{ marginLeft: 'auto', background: 'var(--tertiary)', color: 'var(--on-tertiary)' }} onClick={() => navigate('/asha/sync')}>
+              Sync Now
+            </button>
           </div>
-          <button className="btn btn--sm" style={{ marginLeft: 'auto', background: 'var(--tertiary)', color: 'var(--on-tertiary)' }} onClick={() => navigate('/asha/sync')}>
-            Sync Now
-          </button>
-        </div>
+        )}
 
         {/* Stats Row */}
         <div className="grid gap-3 mb-6" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>

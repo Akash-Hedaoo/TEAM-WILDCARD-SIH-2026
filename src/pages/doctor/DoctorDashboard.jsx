@@ -1,15 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SideNavBar from '../../components/shared/SideNavBar';
 import BottomNavBar from '../../components/shared/BottomNavBar';
 import AIApprovalModal from '../../components/doctor/AIApprovalModal';
 import Icon from '../../components/shared/Icon';
+import { useAppContext } from '../../context/useAppContext';
 import { patients, currentDoctor } from '../../data/dummyData';
 
+/**
+ * DoctorDashboard - Priority queue management
+ * Shows patients sorted by triage level with split-pane detail view
+ */
 export default function DoctorDashboard() {
   const navigate = useNavigate();
+  const { isAuthenticated, addNotification } = useAppContext();
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [showAI, setShowAI] = useState(false);
+
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated) {
+      addNotification('Please log in to access the doctor dashboard', 'warning', 2000);
+      navigate('/login');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, navigate]);
 
   const triageBadge = { red: 'badge--red', yellow: 'badge--yellow', green: 'badge--green' };
   const sorted = [...patients].sort((a, b) => {
@@ -72,7 +87,7 @@ export default function DoctorDashboard() {
           {selectedPatient ? (
             <div style={{ padding: 'var(--sp-6)' }}>
               {/* Back button (mobile) */}
-              <button className="btn btn--ghost mb-4" onClick={() => setSelectedPatient(null)} style={{ display: 'flex' }}>
+              <button className="btn btn--ghost mb-4 lg-hide" onClick={() => setSelectedPatient(null)} style={{ display: 'flex' }}>
                 <Icon name="arrow_back" size={18} /> Back to Queue
               </button>
 

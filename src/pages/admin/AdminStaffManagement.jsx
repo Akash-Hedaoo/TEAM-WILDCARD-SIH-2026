@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import SideNavBar from '../../components/shared/SideNavBar';
 import BottomNavBar from '../../components/shared/BottomNavBar';
 import Icon from '../../components/shared/Icon';
 import { currentAdmin } from '../../data/dummyData';
 
 export default function AdminStaffManagement() {
-  const navigate = useNavigate();
   const [filter, setFilter] = useState('all');
 
   const staff = [
